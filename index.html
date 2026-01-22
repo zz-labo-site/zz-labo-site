@@ -202,7 +202,28 @@
             font-size: 1rem; color: rgba(255,255,255,0.7); max-width: 700px; line-height: 1.6;
         }
 
-        /* Video Layer */
+        /* --- Play Simulation Button Effect (New) --- */
+        .play-simulation-btn {
+            color: var(--acid-yellow);
+            cursor: pointer;
+            transition: color 0.2s;
+            display: inline-block;
+            font-weight: bold;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .play-simulation-btn:hover {
+            color: var(--danger-red);
+            animation: alert-blink 0.1s infinite alternate; /* 高速点滅 */
+            text-shadow: 0 0 5px var(--danger-red);
+        }
+
+        @keyframes alert-blink {
+            0% { opacity: 1; text-shadow: 0 0 10px var(--danger-red); }
+            100% { opacity: 0.4; text-shadow: 0 0 2px var(--danger-red); }
+        }
+
+        /* Video Layer (Updated for Size) */
         #video-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.98); z-index: 100; display: none;
@@ -210,11 +231,27 @@
             -webkit-overflow-scrolling: touch;
         }
         #video-layer.active { display: block; opacity: 1; }
+        
         .article-container {
-            width: 100%; max-width: 1000px; margin: 0 auto;
-            padding: 100px 5vw 150px; display: flex; flex-direction: column; gap: 20px;
+            width: 100%;
+            /* PC: 幅を広げて動画を大きく見せる */
+            max-width: 1400px; 
+            margin: 0 auto;
+            padding: 100px 5vw 150px; 
+            display: flex; flex-direction: column; gap: 20px;
         }
-        @media (max-width: 768px) { .article-container { padding-top: 80px; } }
+        /* Mobile Padding Adjustment: 動画を画面幅いっぱいに */
+        @media (max-width: 768px) { 
+            .article-container { padding: 80px 0 150px; } 
+            .video-wrapper {
+                border-left: none; border-right: none;
+            }
+            /* 記事の文字部分は余白を持たせる */
+            .article-header, .article-body, .player-controls {
+                padding-left: 5vw; padding-right: 5vw;
+            }
+        }
+        
         .video-wrapper {
             width: 100%; aspect-ratio: 16/9; border: 1px solid var(--acid-yellow);
             box-shadow: 0 0 30px rgba(235, 191, 0, 0.1); background: #000; position: relative;
@@ -411,7 +448,7 @@
         <div class="counter">00</div>
     </div>
 
-    <!-- HUD -->
+    <!-- HUD (Deleted Preview Button) -->
     <div class="hud-overlay">
         <!-- Changed to Center Alignment -->
         <div class="hud-row" style="justify-content: center;">
@@ -423,6 +460,7 @@
         
         <div class="hud-row" style="align-items: flex-end;">
             <div class="meta-data" id="status-text">PROTOCOL: SURVIVAL<br>STATUS: WAITING FOR INPUT</div>
+            <!-- Removed Upload UI -->
             <div class="upload-ui">
                 <label for="fileInput" class="upload-btn">[ PREVIEW: OVERRIDE IMAGE ]</label>
                 <input type="file" id="fileInput" accept="image/*">
@@ -554,7 +592,7 @@
                     <h2 class="blog-title" onclick="openVideo('${item.id}')">${item.title}</h2>
                     <div class="blog-meta">
                         TARGET: ${item.title}<br>STATUS: ${item.description}<br><br>
-                        <strong style="color:var(--acid-yellow); cursor:pointer;" onclick="openVideo('${item.id}')">[ PLAY SIMULATION ]</strong>
+                        <span class="play-simulation-btn" onclick="openVideo('${item.id}')">[ PLAY SIMULATION ]</span>
                     </div>
                 </section>`;
             });
@@ -675,20 +713,31 @@
         const fileInput = document.getElementById('fileInput');
         const previewLogo = document.getElementById('preview-logo');
         const placeholder = document.getElementById('placeholder');
-        previewLogo.onerror = function() { this.style.display = 'none'; placeholder.style.display = 'flex'; };
-        previewLogo.onload = function() { this.style.display = 'block'; placeholder.style.display = 'none'; };
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewLogo.src = e.target.result;
-                    displacement.setAttribute('scale', 50);
-                    setTimeout(() => { displacement.setAttribute('scale', 10); }, 500);
+        if (previewLogo) {
+            previewLogo.onerror = function() { 
+                this.style.display = 'none'; 
+                if(placeholder) placeholder.style.display = 'flex'; 
+            };
+            previewLogo.onload = function() { 
+                this.style.display = 'block'; 
+                if(placeholder) placeholder.style.display = 'none'; 
+            };
+        }
+        
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewLogo.src = e.target.result;
+                        displacement.setAttribute('scale', 50);
+                        setTimeout(() => { displacement.setAttribute('scale', 10); }, 500);
+                    }
+                    reader.readAsDataURL(file);
                 }
-                reader.readAsDataURL(file);
-            }
-        });
+            });
+        }
 
         const cursorOuter = document.querySelector('.cursor-outer');
         const cursorInner = document.querySelector('.cursor-inner');
@@ -742,6 +791,12 @@
         }
 
         function animateCursor() {
+            // Check existence of cursor elements
+            if (!cursorOuter || !cursorInner) {
+                requestAnimationFrame(animateCursor);
+                return;
+            }
+
             // Speed Calculation
             const speed = Math.hypot(mouseX - outX, mouseY - outY);
             
@@ -772,6 +827,9 @@
         animateCursor();
 
         function updateVisuals() {
+            // Check for existence of elements before accessing classList
+            const entrance = document.getElementById('entrance-layer');
+
             if (!isHovering) {
                 const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
                 const dx = (mouseX - cx) / cx, dy = (mouseY - cy) / cy;
@@ -779,7 +837,7 @@
                 turbulence.setAttribute('baseFrequency', `${fx} ${fy}`);
                 displacement.setAttribute('scale', 10 + (Math.abs(dx) * 20));
             }
-            if (!document.getElementById('entrance-layer').classList.contains('exit')) {
+            if (entrance && !entrance.classList.contains('exit')) {
                 const x = (window.innerWidth - mouseX * 2) / 100, y = (window.innerHeight - mouseY * 2) / 100;
                 logoCont.style.transform = `translate(calc(-50% + ${x * 2}px), calc(-50% + ${y * 2}px))`;
                 title.style.transform = `translateX(${x}px) translateY(${y}px)`;
@@ -788,20 +846,22 @@
         }
 
         const logoContainer = document.getElementById('main-logo-container');
-        logoContainer.addEventListener('mouseenter', () => {
-            isHovering = true;
-            cursorOuter.classList.add('warning');
-            cursorInner.classList.add('warning');
-            dangerOverlay.classList.add('active'); 
-            displacement.setAttribute('scale', 0);
-        });
-        logoContainer.addEventListener('mouseleave', () => {
-            isHovering = false;
-            cursorOuter.classList.remove('warning');
-            cursorInner.classList.remove('warning');
-            dangerOverlay.classList.remove('active'); 
-            displacement.setAttribute('scale', 10);
-        });
+        if (logoContainer) { // Check existence
+            logoContainer.addEventListener('mouseenter', () => {
+                isHovering = true;
+                if(cursorOuter) cursorOuter.classList.add('warning');
+                if(cursorInner) cursorInner.classList.add('warning');
+                if(dangerOverlay) dangerOverlay.classList.add('active'); 
+                displacement.setAttribute('scale', 0);
+            });
+            logoContainer.addEventListener('mouseleave', () => {
+                isHovering = false;
+                if(cursorOuter) cursorOuter.classList.remove('warning');
+                if(cursorInner) cursorInner.classList.remove('warning');
+                if(dangerOverlay) dangerOverlay.classList.remove('active'); 
+                displacement.setAttribute('scale', 10);
+            });
+        }
 
         /* --- Canvas Wave Animation --- */
         const canvas = document.getElementById('bg-canvas');
@@ -843,16 +903,12 @@
         }
         drawWaves();
 
-        /* Loader */
-        const loader = document.querySelector('.loader');
-        const counter = document.querySelector('.counter');
-        let loadCount = 0;
-        const loadInt = setInterval(() => {
-            loadCount += Math.floor(Math.random() * 5) + 1;
-            if(loadCount > 100) loadCount = 100;
-            counter.innerText = loadCount < 10 ? `0${loadCount}` : loadCount;
-            if(loadCount === 100) { clearInterval(loadInt); setTimeout(() => { loader.classList.add('hidden'); }, 500); }
-        }, 30);
+        // Remove Loader on init (since it was removed from UI but code might be good to have just in case, but let's hide it immediately)
+        setTimeout(() => { 
+            const l = document.querySelector('.loader');
+            if(l) l.classList.add('hidden'); 
+        }, 100);
+
     </script>
 </body>
 </html>
