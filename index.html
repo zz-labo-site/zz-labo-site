@@ -274,11 +274,6 @@
         .close-btn:hover { background: var(--text-white); color: #000; }
         .fallback-btn { color: var(--acid-yellow); border-color: var(--acid-yellow); }
         .fallback-btn:hover { background: var(--acid-yellow); color: #000; }
-        .embed-hint {
-            font-family: 'JetBrains Mono', monospace; font-size: 10px;
-            color: rgba(255,255,255,0.5); text-align: center;
-            margin-top: -10px; margin-bottom: 20px;
-        }
         
         /* Article */
         .article-header { border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 20px; margin-bottom: 20px; }
@@ -286,6 +281,7 @@
         .article-title { font-family: 'Noto Sans JP', sans-serif; font-weight: 900; font-size: clamp(2rem, 5vw, 4rem); line-height: 1.2; color: #fff; margin: 0; }
         .article-body { font-family: 'Noto Sans JP', sans-serif; font-size: 1rem; line-height: 2; color: rgba(255,255,255,0.9); }
         .article-body h3 { font-family: 'JetBrains Mono', 'Noto Sans JP', sans-serif; color: var(--acid-yellow); font-size: 1.5rem; margin-top: 3rem; margin-bottom: 1rem; border-left: 4px solid var(--acid-yellow); padding-left: 15px; }
+        .article-body h4 { font-family: 'Noto Sans JP', sans-serif; color: #fff; font-size: 1.2rem; margin-top: 2rem; margin-bottom: 0.5rem; font-weight: bold; }
         .article-body p { margin-bottom: 1.5rem; }
 
         /* --- 8. About --- */
@@ -412,11 +408,6 @@
         }
 
         /* --- 12. Utilities --- */
-        .upload-ui { pointer-events: auto; margin-top: 10px; text-align: right; opacity: 0.5; transition: opacity 0.3s; }
-        .upload-ui:hover { opacity: 1; }
-        .upload-btn { background: transparent; border: 1px solid var(--acid-yellow); color: var(--acid-yellow); font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 5px 10px; cursor: pointer; text-transform: uppercase; transition: all 0.3s; display: inline-block; }
-        .upload-btn:hover { background: var(--acid-yellow); color: #000; }
-        #fileInput { display: none; }
         .glitch-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #EBBF00; z-index: 9000; display: none; mix-blend-mode: exclusion; }
         .danger-flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(255,0,0,0.4) 0%, rgba(255,0,0,0.8) 100%); z-index: 5000; opacity: 0; pointer-events: none; mix-blend-mode: overlay; transition: opacity 0.1s; }
         .danger-flash.active { animation: red-strobe 0.12s infinite; }
@@ -443,12 +434,7 @@
     <div class="cursor-inner"></div>
     <div class="glitch-transition" id="transition-overlay"></div>
 
-    <div class="loader">
-        <div class="loader-text">ZZ LABO</div>
-        <div class="counter">00</div>
-    </div>
-
-    <!-- HUD (Deleted Preview Button) -->
+    <!-- HUD -->
     <div class="hud-overlay">
         <!-- Changed to Center Alignment -->
         <div class="hud-row" style="justify-content: center;">
@@ -460,11 +446,6 @@
         
         <div class="hud-row" style="align-items: flex-end;">
             <div class="meta-data" id="status-text">PROTOCOL: SURVIVAL<br>STATUS: WAITING FOR INPUT</div>
-            <!-- Removed Upload UI -->
-            <div class="upload-ui">
-                <label for="fileInput" class="upload-btn">[ PREVIEW: OVERRIDE IMAGE ]</label>
-                <input type="file" id="fileInput" accept="image/*">
-            </div>
         </div>
         <div class="scroll-indicator" id="scroll-hint">INITIALIZE PROTOCOL</div>
     </div>
@@ -506,7 +487,6 @@
                 <button class="close-btn" onclick="closeVideo()">CLOSE MONITOR</button>
                 <a id="fallback-link" href="#" target="_blank" class="fallback-btn">WATCH ON YOUTUBE</a>
             </div>
-            <div class="embed-hint">IF ERROR 153: ENABLE EMBEDDING IN YOUTUBE STUDIO</div>
             <div id="article-content-target"></div>
         </div>
     </div>
@@ -539,33 +519,66 @@
             {
                 id: "01",
                 youtubeId: "gqx7CXlYAys", 
-                title: "硫酸の脅威", 
-                description: "皮膚接触による重度熱傷の危険性。水との反応熱に注意せよ。緊急時の洗浄手順と中和剤の誤用について解説する。",
+                title: "【閲覧注意】硫酸を浴びたらどうなる？", 
+                description: "もしも、体に硫酸を浴びせられたら？その激痛の中で何を選択するかが、その後の生存の質を分ける唯一の境界線になる。",
                 dangerLevel: "CRITICAL",
                 articleHtml: `
                     <div class="article-header">
                         <span class="article-id">CASE_FILE #01</span>
-                        <h1 class="article-title">硫酸の脅威</h1>
+                        <h1 class="article-title">【閲覧注意】硫酸を浴びたらどうなる？</h1>
                     </div>
                     <div class="article-body">
-                        <p>硫酸（H₂SO₄）は、極めて強力な脱水作用と酸化作用を持つ劇物です。皮膚に付着した場合、瞬時に組織の水分を奪いながら炭化させ、重度の化学熱傷を引き起こします。</p>
-                        <h3>緊急時の対処法：水洗いか？拭き取りか？</h3>
-                        <p>一般的な化学薬品の対処法として「大量の水で洗い流す」ことが推奨されますが、濃硫酸の場合は注意が必要です。水と反応すると急激な発熱（溶解熱）が生じ、熱による二次被害を引き起こす可能性があるからです。</p>
-                        <p>しかし、それでもなお、<strong>大量の水で一気に洗い流すこと</strong>が、結果的に最も生存率を高める方法とされています。中途半端な水量では熱傷が悪化するため、ホースなどで大量の水をかけ続けることが重要です。</p>
-                        <h3>中和剤の誤用について</h3>
-                        <p>アルカリ性のもので中和しようとする行為は自殺行為です。中和熱によりさらに高温になり、傷口を深めることになります。絶対にやめてください。</p>
+                        <p>もしも、体に硫酸を浴びせられたら？ ただパニックになり、その場に立ち尽くすことは、酸が再生不可能な深部まで到達するのを許すことと同義です。</p>
+                        <p>硫酸の真の恐ろしさは「脱水作用」にあります。一瞬で水分を奪い、タンパク質を真っ黒な炭に変えてしまう。 その激痛の中で何を選択するかが、<strong>「一生残る傷跡をどれだけ最小限に食い止められるか」</strong>という、その後の生存の質を分ける唯一の境界線になります。</p>
+                        
+                        <h3>1. 【即時対応】被害拡大を食い止める物理的洗浄</h3>
+                        <p>唯一の正解は、大量の流水で20分以上、ひたすら洗い流すことです。 「拭き取る」「重曹で中和する」といった中途半端な知識は、急激な化学反応による熱傷を招き、事態をさらに悪化させる「最大の罠」になります。</p>
+
+                        <h3>2. 【事後対応】不可逆なダメージを最小化する</h3>
+                        <p>硫酸による化学熱傷は、放置すれば秒単位で深部へと進行し続けます。 たとえ傷跡が残ることは避けられなくても、どれだけ早く流水に辿り着けるか。 あなたのその瞬間の執念が、未来の自分に残せる皮膚の面積を決定づけます。</p>
+                        
+                        <p>知っているだけで、自分や大切な人を守るための「盾」になる知識があります。 絶体絶命のシナリオを生き抜くために、あなたも「研究員」として参加しませんか？</p>
+
+                        <p><a href="https://www.youtube.com/@絶体絶命ラボ?sub_confirmation=1" target="_blank" style="color:var(--acid-yellow); text-decoration:underline;">🔬 研究員募集（ワンクリックでチャンネル登録）</a></p>
+
+                        <h4>⚠️ 相談・通報窓口</h4>
+                        <p>
+                        緊急時の通報（警察） 電話番号：110<br>
+                        救急車の要請（消防・救急） 電話番号：119<br>
+                        警察庁：性犯罪・事件被害相談電話 電話番号：#8103（ハートさん）<br>
+                        ※硫酸攻撃を含む、悪質な犯罪被害全般の相談窓口です。
+                        </p>
                     </div>
                 `
             },
             {
                 id: "02",
-                youtubeId: "M7lc1UVf-VE",
-                title: "睡眠薬のOD",
-                description: "中枢神経抑制による呼吸停止のシミュレーション。致死量に至るメカニズムと、発見時の応急処置(気道確保)について。",
+                youtubeId: "IgWqcxIMxJ4", 
+                // タイトル改行位置を修正
+                title: "盛られた。<br>完全に意識が消えるまで<br>の数分間にすべきこと",
+                description: "もしも、飲み物に薬を盛られたら？「空白の数分間」に何を選択するかが、あなたの未来を守る唯一の境界線になる。",
                 dangerLevel: "HIGH",
                 articleHtml: `
-                    <div class="article-header"><span class="article-id">CASE_FILE #02</span><h1 class="article-title">睡眠薬のOD</h1></div>
-                    <div class="article-body"><p>記事の準備中です...</p></div>
+                    <div class="article-header">
+                        <span class="article-id">CASE_FILE #02</span>
+                        <h1 class="article-title">盛られた。<br>完全に意識が消えるまで<br>の数分間にすべきこと</h1>
+                    </div>
+                    <div class="article-body">
+                        <p>もしも、飲み物に薬を盛られたら？ パニックになり、ただ意識を失うのを待つだけでは、自分を守ることはできません。</p>
+                        <p>薬が脳に回りきれば、思考も身体もあなたの自由にはなりません。 その「空白の数分間」に何を選択するかが、あなたの未来を守る唯一の境界線になるのです。</p>
+                        
+                        <h3>1. 【今を生き延びる】物理的な安全確保</h3>
+                        <p>犯人の狙いは、あなたの「孤立」です。 周囲を欺く「介抱」という名の移動は、逃げ場のない「密室」への招待状に他なりません。 意識があるうちに、近くの店員やガードマンなど「第三者」に物理的にすがりつき、助けを求めてください。</p>
+                        
+                        <h3>2. 【未来を守る】言い逃れを許さない証拠の確保</h3>
+                        <p>もし声が出せなくなっても、まだできることがあります。 意識を失う直前、自分の服に飲み物をこぼしてください。 そのシミが、後で犯人を追い詰める決定的な「証拠」を身体に刻むことになります。 これは、未来のあなたを守るための執念の逆転劇です。</p>
+
+                        <h4>⚠️ 相談・通報窓口</h4>
+                        <p>
+                        性犯罪・性暴力被害者のためのワンストップ支援センター<br>電話番号：#8891（はやくワンストップ）<br>
+                        性犯罪被害相談電話<br>電話番号：#8103（ハートさん）
+                        </p>
+                    </div>
                 `
             },
             {
@@ -586,12 +599,15 @@
             const container = document.getElementById('archive-container');
             let html = '';
             archives.forEach(item => {
+                // TARGET表示用に改行タグを除去したタイトルを作成
+                const targetTitle = item.title.replace(/<br>/g, '');
+                
                 html += `
                 <section class="blog-section">
                     <span class="blog-number">CASE_FILE #${item.id} // DANGER LEVEL: ${item.dangerLevel}</span>
                     <h2 class="blog-title" onclick="openVideo('${item.id}')">${item.title}</h2>
                     <div class="blog-meta">
-                        TARGET: ${item.title}<br>STATUS: ${item.description}<br><br>
+                        TARGET: ${targetTitle}<br>STATUS: ${item.description}<br><br>
                         <span class="play-simulation-btn" onclick="openVideo('${item.id}')">[ PLAY SIMULATION ]</span>
                     </div>
                 </section>`;
@@ -710,7 +726,6 @@
         }
 
         /* EFFECTS */
-        const fileInput = document.getElementById('fileInput');
         const previewLogo = document.getElementById('preview-logo');
         const placeholder = document.getElementById('placeholder');
         if (previewLogo) {
@@ -722,21 +737,6 @@
                 this.style.display = 'block'; 
                 if(placeholder) placeholder.style.display = 'none'; 
             };
-        }
-        
-        if (fileInput) {
-            fileInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        previewLogo.src = e.target.result;
-                        displacement.setAttribute('scale', 50);
-                        setTimeout(() => { displacement.setAttribute('scale', 10); }, 500);
-                    }
-                    reader.readAsDataURL(file);
-                }
-            });
         }
 
         const cursorOuter = document.querySelector('.cursor-outer');
@@ -903,13 +903,8 @@
         }
         drawWaves();
 
-        // Remove Loader on init (since it was removed from UI but code might be good to have just in case, but let's hide it immediately)
-        setTimeout(() => { 
-            const l = document.querySelector('.loader');
-            if(l) l.classList.add('hidden'); 
-        }, 100);
-
     </script>
 </body>
 </html>
+
 
