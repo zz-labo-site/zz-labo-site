@@ -202,6 +202,27 @@
             font-size: 1rem; color: rgba(255,255,255,0.7); max-width: 700px; line-height: 1.6;
         }
 
+        /* --- Play Simulation Button Effect (New) --- */
+        .play-simulation-btn {
+            color: var(--acid-yellow);
+            cursor: pointer;
+            transition: color 0.2s;
+            display: inline-block;
+            font-weight: bold;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .play-simulation-btn:hover {
+            color: var(--danger-red);
+            animation: alert-blink 0.1s infinite alternate; /* 高速点滅 */
+            text-shadow: 0 0 5px var(--danger-red);
+        }
+
+        @keyframes alert-blink {
+            0% { opacity: 1; text-shadow: 0 0 10px var(--danger-red); }
+            100% { opacity: 0.4; text-shadow: 0 0 2px var(--danger-red); }
+        }
+
         /* --- Subscribe Link Animation (New) --- */
         .subscribe-link {
             color: var(--acid-yellow);
@@ -465,7 +486,6 @@
             <div class="background-type">SURVIVAL / HAZARD / CHAOS / SURVIVAL / HAZARD / SURVIVAL / HAZARD / CHAOS / SURVIVAL / HAZARD</div>
             <div class="logo-container" id="main-logo-container" onclick="enterArchives()">
                 <img id="preview-logo" src="logo.png" alt="ZZ LOGO" class="logo-img">
-                <!-- Fallback when logo not found -->
                 <div id="placeholder" class="logo-placeholder-circle"><span>ZZ</span><div>LOGO.PNG NOT FOUND<br>PLEASE PLACE FILE</div></div>
             </div>
             <div class="hero-title-wrapper"><h1 class="hero-title">ZETTAI<br><span class="highlight">ZETSUMEI</span><br>LABORATORY</h1></div>
@@ -583,14 +603,11 @@
             },
             {
                 id: "03",
-                youtubeId: "dQw4w9WgXcQ",
-                title: "エレベーター落下",
-                description: "自由落下時の衝撃分散姿勢について。ジャンプ説の誤謬と、物理学的に最も生存率が高い姿勢を検証する。",
-                dangerLevel: "MEDIUM",
-                articleHtml: `
-                    <div class="article-header"><span class="article-id">CASE_FILE #03</span><h1 class="article-title">エレベーター落下</h1></div>
-                    <div class="article-body"><p>記事の準備中です...</p></div>
-                `
+                youtubeId: "", 
+                title: "新作動画準備中<br>楽しみにお待ちください",
+                description: "COMING SOON...",
+                dangerLevel: "---", 
+                articleHtml: ""
             }
         ];
 
@@ -599,13 +616,16 @@
             const container = document.getElementById('archive-container');
             let html = '';
             archives.forEach(item => {
-                // TARGET表示用に改行タグを除去したタイトルを作成
-                const targetTitle = item.title.replace(/<br>/g, '');
+                const targetTitle = item.title.replace(/<br>/g, ' ');
+                const isReady = item.youtubeId !== ""; 
+                
+                const clickAttr = isReady ? `onclick="openVideo('${item.id}')"` : "";
+                const styleAttr = isReady ? "" : "pointer-events: none; opacity: 0.6;";
                 
                 html += `
                 <section class="blog-section">
                     <span class="blog-number">CASE_FILE #${item.id}</span>
-                    <h2 class="blog-title" onclick="openVideo('${item.id}')">${item.title}</h2>
+                    <h2 class="blog-title" style="${styleAttr}" ${clickAttr}>${item.title}</h2>
                     <div class="blog-meta">
                         TARGET: ${targetTitle}<br>STATUS: ${item.description}<br><br>
                     </div>
@@ -875,7 +895,3 @@
     </script>
 </body>
 </html>
-
-
-
-
