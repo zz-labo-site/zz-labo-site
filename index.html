@@ -2,11 +2,11 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport設定: スマホでの表示倍率を制御 -->
+    <!-- Viewport設定 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ZETTAI ZETSUMEI LABO | ARCHIVES</title>
     
-    <!-- High-End Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;900&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
@@ -20,10 +20,9 @@
             --text-white: #f0f0f0;
         }
 
-        /* --- 1. Base Setup --- */
+        /* --- Base Setup --- */
         *, *::before, *::after {
             box-sizing: border-box;
-            /* スマホでのタップハイライトを無効化 */
             -webkit-tap-highlight-color: transparent; 
         }
 
@@ -36,26 +35,21 @@
             color: var(--text-white);
             font-family: 'Inter', sans-serif;
             overflow: hidden;
-            /* スマホでのスクロールバウンス防止 */
             overscroll-behavior: none;
         }
 
-        /* PCのみカーソルを消す（スマホではネイティブカーソルなし） */
         @media (pointer: fine) {
             *, *::before, *::after {
                 cursor: none !important; 
             }
         }
 
-        /* --- 2. Background Graphics & Atmosphere --- */
-        
-        /* Canvas for Vital Waves */
+        /* --- Background Graphics --- */
         #bg-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; opacity: 0.3; pointer-events: none;
         }
 
-        /* Toxic Fog Animation */
         .toxic-fog {
             position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
             background-image: radial-gradient(circle at 50% 50%, rgba(235, 191, 0, 0.05), transparent 60%),
@@ -68,7 +62,6 @@
             100% { transform: translate(-10%, -5%) scale(1.1); }
         }
 
-        /* Existing Noise */
         .noise-overlay {
             position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
             background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.4"/%3E%3C/svg%3E');
@@ -82,7 +75,7 @@
             90% { transform: translate(-10%, 10%); }
         }
 
-        /* --- 3. Layers & Transitions --- */
+        /* --- Layers --- */
         .layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 1s ease;
@@ -99,7 +92,7 @@
         #blog-layer::-webkit-scrollbar, #about-layer::-webkit-scrollbar { display: none; }
         #blog-layer.active, #about-layer.active { opacity: 1; transform: scale(1); z-index: 20; pointer-events: auto; }
 
-        /* --- 4. Typography & Layout --- */
+        /* --- Typography --- */
         .hero-title {
             font-family: 'Anton', sans-serif; font-size: 12vw;
             text-transform: uppercase; line-height: 0.85; margin: 0;
@@ -131,7 +124,6 @@
             100% { transform: translate(-50%, -50%) translateY(-20%); }
         }
 
-        /* --- Warning Stripe Design for "ZETSUMEI" --- */
         .highlight {
             color: transparent;
             background-image: repeating-linear-gradient(-45deg, var(--acid-yellow), var(--acid-yellow) 10px, #000 10px, #000 20px);
@@ -140,7 +132,7 @@
             filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
         }
 
-        /* --- 5. Logo --- */
+        /* --- Logo --- */
         .logo-container {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%); width: 30vw; height: 30vw;
@@ -171,7 +163,7 @@
             font-size: 3rem; color: var(--acid-yellow); font-family: 'Anton', sans-serif; margin-bottom: 10px;
         }
 
-        /* --- 6. Blog & Video --- */
+        /* --- Blog Index --- */
         .blog-section {
             height: 100vh; width: 100%; display: flex; flex-direction: column;
             justify-content: center; align-items: flex-start; padding: 5vw;
@@ -202,47 +194,24 @@
             font-size: 1rem; color: rgba(255,255,255,0.7); max-width: 700px; line-height: 1.6;
         }
 
-        /* --- Play Simulation Button Effect (New) --- */
-        .play-simulation-btn {
-            color: var(--acid-yellow);
-            cursor: pointer;
-            transition: color 0.2s;
-            display: inline-block;
-            font-weight: bold;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .play-simulation-btn:hover {
-            color: var(--danger-red);
-            animation: alert-blink 0.1s infinite alternate; /* 高速点滅 */
-            text-shadow: 0 0 5px var(--danger-red);
-        }
-
-        @keyframes alert-blink {
-            0% { opacity: 1; text-shadow: 0 0 10px var(--danger-red); }
-            100% { opacity: 0.4; text-shadow: 0 0 2px var(--danger-red); }
-        }
-
-        /* --- Subscribe Link Animation (New) --- */
+        /* --- Subscribe Link --- */
         .subscribe-link {
             color: var(--acid-yellow);
             text-decoration: underline;
             transition: all 0.3s ease;
             display: inline-block;
         }
-
         .subscribe-link:hover {
-            font-weight: 900; /* 文字を太く */
-            animation: slow-blink 1.5s infinite ease-in-out; /* ゆっくり点滅 */
+            font-weight: 900; 
+            animation: slow-blink 1.5s infinite ease-in-out; 
             text-shadow: 0 0 8px var(--acid-yellow);
         }
-
         @keyframes slow-blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
 
-        /* Video Layer (Updated for Size) */
+        /* --- Video Player Layer --- */
         #video-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.98); z-index: 100; display: none;
@@ -253,19 +222,14 @@
         
         .article-container {
             width: 100%;
-            /* PC: 幅を広げて動画を大きく見せる */
             max-width: 1400px; 
             margin: 0 auto;
             padding: 100px 5vw 150px; 
             display: flex; flex-direction: column; gap: 20px;
         }
-        /* Mobile Padding Adjustment: 動画を画面幅いっぱいに */
         @media (max-width: 768px) { 
             .article-container { padding: 80px 0 150px; } 
-            .video-wrapper {
-                border-left: none; border-right: none;
-            }
-            /* 記事の文字部分は余白を持たせる */
+            .video-wrapper { border-left: none; border-right: none; }
             .article-header, .article-body, .player-controls {
                 padding-left: 5vw; padding-right: 5vw;
             }
@@ -294,7 +258,7 @@
         .fallback-btn { color: var(--acid-yellow); border-color: var(--acid-yellow); }
         .fallback-btn:hover { background: var(--acid-yellow); color: #000; }
         
-        /* Article */
+        /* Article Styles */
         .article-header { border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 20px; margin-bottom: 20px; }
         .article-id { font-family: 'JetBrains Mono', monospace; color: var(--acid-yellow); font-size: 0.9rem; display: block; margin-bottom: 10px; }
         .article-title { font-family: 'Noto Sans JP', sans-serif; font-weight: 900; font-size: clamp(2rem, 5vw, 4rem); line-height: 1.2; color: #fff; margin: 0; }
@@ -322,61 +286,37 @@
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
         /* --- 10. Custom Cursor --- */
-        /* Outer Circle (Base) - Always Visible */
         .cursor-outer {
             position: fixed; width: 60px; height: 60px;
-            /* ベースの円を表示（常時見えるように調整） */
             border: 1px solid rgba(255, 255, 255, 0.8); 
             border-radius: 50%; pointer-events: none; z-index: 1000;
             transform: translate(-50%, -50%);
-            /* transformをtransitionから除外 */
             transition: width 0.3s, height 0.3s, background 0.3s, border 0.2s;
-            /* 合成モードを通常に戻して視認性確保 */
             mix-blend-mode: normal;
-            box-shadow: 0 0 10px rgba(255,255,255,0.2); /* 常時微発光 */
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
         }
-
-        /* Electric Ring Effect - White */
         .cursor-outer::before {
             content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
             border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50%; 
-            transition: all 0.1s;
-            opacity: 0.5;
+            border-radius: 50%; transition: all 0.1s; opacity: 0.5;
         }
-
-        /* Moving State: Electricity (Dashed, White, Glow) */
-        .cursor-outer.moving {
-            border-color: #fff;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        }
-        
+        .cursor-outer.moving { border-color: #fff; box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
         .cursor-outer.moving::before {
             border: 2px dashed #ffffff;
-            box-shadow: 
-                0 0 10px rgba(255, 255, 255, 0.8), 
-                inset 0 0 5px rgba(255, 255, 255, 0.5);
-            opacity: 1;
-            filter: blur(1px); 
-            animation: spin-electric 0.4s linear infinite;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.5);
+            opacity: 1; filter: blur(1px); animation: spin-electric 0.4s linear infinite;
         }
         @keyframes spin-electric {
             0% { transform: rotate(0deg) scale(1); }
             50% { transform: rotate(180deg) scale(1.1); }
             100% { transform: rotate(360deg) scale(1); }
         }
-
-        /* Warning State */
         .cursor-outer.warning {
-            width: 120px; height: 120px;
-            background: var(--danger-red);
-            mix-blend-mode: overlay;
-            border: 2px solid var(--danger-red);
-            box-shadow: 0 0 20px var(--danger-red);
+            width: 120px; height: 120px; background: var(--danger-red); mix-blend-mode: overlay;
+            border: 2px solid var(--danger-red); box-shadow: 0 0 20px var(--danger-red);
         }
         .cursor-outer.warning::before { display: none; }
 
-        /* Inner Dot */
         .cursor-inner {
             position: fixed; width: 6px; height: 6px;
             background: var(--acid-yellow); border-radius: 50%;
@@ -387,18 +327,13 @@
         }
         .cursor-inner.warning { background: var(--danger-red); transform: translate(-50%, -50%) scale(0.5); }
 
-        /* Spark Particle */
         .spark {
             position: fixed; width: 3px; height: 3px;
-            background: #fff; border-radius: 50%;
-            pointer-events: none; z-index: 1002;
+            background: #fff; border-radius: 50%; pointer-events: none; z-index: 1002;
             box-shadow: 0 0 5px #fff;
         }
 
-        /* タッチデバイス（指操作）の時だけ消す（PCでは常に表示） */
-        @media (pointer: coarse) {
-            .cursor-outer, .cursor-inner { display: none !important; }
-        }
+        @media (pointer: coarse) { .cursor-outer, .cursor-inner { display: none !important; } }
 
         /* --- 11. Nav Dock --- */
         .nav-dock { position: fixed; right: 2rem; top: 50%; transform: translateY(-50%); z-index: 900; display: flex; flex-direction: column; gap: 1.5rem; pointer-events: auto; }
@@ -411,7 +346,7 @@
         }
         @media (max-width: 768px) { .nav-btn { width: 38px; height: 38px; } .nav-btn svg { width: 18px; height: 18px; } }
         .nav-btn.square { border-radius: 4px; border-color: var(--acid-yellow); color: var(--acid-yellow); }
-        .nav-btn.square svg path { fill: var(--acid-yellow); } /* アイコン色指定 */
+        .nav-btn.square svg path { fill: var(--acid-yellow); }
         .nav-btn:hover { border-color: var(--acid-yellow); background: var(--acid-yellow); color: #000; box-shadow: 0 0 15px rgba(235, 191, 0, 0.5); transform: scale(1.1); }
         .nav-btn:hover svg path { fill: #000; }
         .nav-btn svg { width: 20px; height: 20px; fill: currentColor; }
@@ -427,11 +362,6 @@
         }
 
         /* --- 12. Utilities --- */
-        .upload-ui { pointer-events: auto; margin-top: 10px; text-align: right; opacity: 0.5; transition: opacity 0.3s; }
-        .upload-ui:hover { opacity: 1; }
-        .upload-btn { background: transparent; border: 1px solid var(--acid-yellow); color: var(--acid-yellow); font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 5px 10px; cursor: pointer; text-transform: uppercase; transition: all 0.3s; display: inline-block; }
-        .upload-btn:hover { background: var(--acid-yellow); color: #000; }
-        #fileInput { display: none; }
         .glitch-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #EBBF00; z-index: 9000; display: none; mix-blend-mode: exclusion; }
         .danger-flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(255,0,0,0.4) 0%, rgba(255,0,0,0.8) 100%); z-index: 5000; opacity: 0; pointer-events: none; mix-blend-mode: overlay; transition: opacity 0.1s; }
         .danger-flash.active { animation: red-strobe 0.12s infinite; }
@@ -458,14 +388,10 @@
     <div class="cursor-inner"></div>
     <div class="glitch-transition" id="transition-overlay"></div>
 
-    <div class="loader">
-        <div class="loader-text">ZZ LABO</div>
-        <div class="counter">00</div>
-    </div>
+    <!-- Removed Loader Completely -->
 
     <!-- HUD -->
     <div class="hud-overlay">
-        <!-- Center Alignment -->
         <div class="hud-row" style="justify-content: center;">
             <div class="meta-data" style="text-align: center;">
                 <strong>SYSTEM: ONLINE</strong><br>
@@ -475,6 +401,7 @@
         
         <div class="hud-row" style="align-items: flex-end;">
             <div class="meta-data" id="status-text">PROTOCOL: SURVIVAL<br>STATUS: WAITING FOR INPUT</div>
+            <!-- Removed Preview UI Completely -->
         </div>
         <div class="scroll-indicator" id="scroll-hint">INITIALIZE PROTOCOL</div>
     </div>
@@ -933,12 +860,6 @@
         }
         drawWaves();
 
-        // Remove Loader on init (since it was removed from UI but code might be good to have just in case, but let's hide it immediately)
-        setTimeout(() => { 
-            const l = document.querySelector('.loader');
-            if(l) l.classList.add('hidden'); 
-        }, 100);
-
         /* --- Access Counter --- */
         const countEl = document.getElementById('access-count');
         const namespace = 'zz-labo-site-v1';
@@ -946,16 +867,14 @@
 
         async function updateCounter() {
             try {
-                // CountAPI (無料・登録不要のカウンタAPI)
-                // hitエンドポイントはカウントアップして値を返す
+                // CountAPI
                 const res = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
                 const data = await res.json();
                 
-                // ゼロ埋めして表示 (例: 00123)
                 if (countEl) countEl.innerText = data.value.toString().padStart(6, '0');
             } catch (e) {
                 console.warn('Counter API failed, using local fallback.');
-                // APIが失敗した場合のフォールバック（ローカルストレージで擬似カウント）
+                // Fallback
                 let localCount = localStorage.getItem('local_access_count') || '1024';
                 localCount = parseInt(localCount) + 1;
                 localStorage.setItem('local_access_count', localCount);
