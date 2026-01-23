@@ -2,11 +2,11 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport設定 -->
+    <!-- Viewport設定: スマホでの表示倍率を制御 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZETTAI ZETSUMEI LABO | ARCHIVES</title>
     
-    <!-- --- SEO & Meta Settings (Added) --- -->
-    <title>絶体絶命ラボ | ZETTAI ZETSUMEI LABO</title>
+    <!-- --- SEO & Meta Settings --- -->
     <meta name="description" content="日常に潜む『最悪のシナリオ』から生存するための科学的ライフハックを研究・発信。硫酸、睡眠薬、エレベーター落下など、絶体絶命の危機を回避する知識をアーカイブした極秘データベース。">
     <meta name="keywords" content="絶体絶命ラボ, サバイバル, 防犯, ライフハック, 科学, シミュレーション, YouTube">
     
@@ -23,9 +23,32 @@
     <meta name="twitter:title" content="絶体絶命ラボ | ZETTAI ZETSUMEI LABO">
     <meta name="twitter:description" content="日常の危機から生存せよ。科学的根拠に基づいたサバイバル術。">
     <meta name="twitter:image" content="https://zz-labo-site.github.io/zz-labo-site/logo.png">
-    <!-- ----------------------------------- -->
 
-    <!-- Fonts -->
+    <!-- Structured Data (JSON-LD) for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "絶体絶命ラボ",
+      "url": "https://zz-labo-site.github.io/zz-labo-site/",
+      "description": "日常の最悪のシナリオから生存するための科学的ライフハック。",
+      "publisher": {
+        "@type": "Organization",
+        "name": "絶体絶命ラボ",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://zz-labo-site.github.io/zz-labo-site/logo.png"
+        }
+      },
+      "sameAs": [
+        "https://www.youtube.com/@絶体絶命ラボ",
+        "https://x.com/ZZLAB48210",
+        "https://www.instagram.com/zz_lab2026/"
+      ]
+    }
+    </script>
+    
+    <!-- High-End Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;900&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
@@ -39,9 +62,10 @@
             --text-white: #f0f0f0;
         }
 
-        /* --- Base Setup --- */
+        /* --- 1. Base Setup --- */
         *, *::before, *::after {
             box-sizing: border-box;
+            /* スマホでのタップハイライトを無効化 */
             -webkit-tap-highlight-color: transparent; 
         }
 
@@ -54,21 +78,26 @@
             color: var(--text-white);
             font-family: 'Inter', sans-serif;
             overflow: hidden;
+            /* スマホでのスクロールバウンス防止 */
             overscroll-behavior: none;
         }
 
+        /* PCのみカーソルを消す（スマホではネイティブカーソルなし） */
         @media (pointer: fine) {
             *, *::before, *::after {
                 cursor: none !important; 
             }
         }
 
-        /* --- Background Graphics --- */
+        /* --- 2. Background Graphics & Atmosphere --- */
+        
+        /* Canvas for Vital Waves */
         #bg-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; opacity: 0.3; pointer-events: none;
         }
 
+        /* Toxic Fog Animation */
         .toxic-fog {
             position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
             background-image: radial-gradient(circle at 50% 50%, rgba(235, 191, 0, 0.05), transparent 60%),
@@ -81,6 +110,7 @@
             100% { transform: translate(-10%, -5%) scale(1.1); }
         }
 
+        /* Existing Noise */
         .noise-overlay {
             position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
             background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.4"/%3E%3C/svg%3E');
@@ -94,7 +124,7 @@
             90% { transform: translate(-10%, 10%); }
         }
 
-        /* --- Layers --- */
+        /* --- 3. Layers & Transitions --- */
         .layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 1s ease;
@@ -111,7 +141,7 @@
         #blog-layer::-webkit-scrollbar, #about-layer::-webkit-scrollbar { display: none; }
         #blog-layer.active, #about-layer.active { opacity: 1; transform: scale(1); z-index: 20; pointer-events: auto; }
 
-        /* --- Typography --- */
+        /* --- 4. Typography & Layout --- */
         .hero-title {
             font-family: 'Anton', sans-serif; font-size: 12vw;
             text-transform: uppercase; line-height: 0.85; margin: 0;
@@ -143,6 +173,7 @@
             100% { transform: translate(-50%, -50%) translateY(-20%); }
         }
 
+        /* --- Warning Stripe Design for "ZETSUMEI" --- */
         .highlight {
             color: transparent;
             background-image: repeating-linear-gradient(-45deg, var(--acid-yellow), var(--acid-yellow) 10px, #000 10px, #000 20px);
@@ -151,7 +182,7 @@
             filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
         }
 
-        /* --- Logo --- */
+        /* --- 5. Logo --- */
         .logo-container {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%); width: 30vw; height: 30vw;
@@ -182,15 +213,29 @@
             font-size: 3rem; color: var(--acid-yellow); font-family: 'Anton', sans-serif; margin-bottom: 10px;
         }
 
-        /* --- Blog Index --- */
+        /* --- 6. Blog & Video (Layout Fixed) --- */
         .blog-section {
-            height: 100vh; width: 100%; display: flex; flex-direction: column;
-            justify-content: center; align-items: flex-start; padding: 5vw;
-            border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; box-sizing: border-box;
+            /* Fix: Changed to min-height to allow content to expand without overlap */
+            min-height: 100vh; 
+            width: 100%; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: flex-start; 
+            /* Fix: Increased padding for better spacing */
+            padding: 15vh 5vw; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            position: relative; 
+            box-sizing: border-box;
         }
+        
         @media (max-width: 768px) {
-            .blog-section { height: auto; min-height: 80vh; padding: 20vh 5vw 10vh; }
+            .blog-section { 
+                /* Fix: More padding for mobile */
+                padding: 15vh 5vw 15vh; 
+            }
         }
+
         .blog-number {
             font-family: 'JetBrains Mono', monospace; color: var(--acid-yellow);
             font-size: 1.2rem; margin-bottom: 1rem; display: block;
@@ -213,24 +258,77 @@
             font-size: 1rem; color: rgba(255,255,255,0.7); max-width: 700px; line-height: 1.6;
         }
 
-        /* --- Subscribe Link --- */
+        /* --- Share Buttons (Updated Layout) --- */
+        .share-area {
+            /* Fix: Increased margin to prevent overlap */
+            margin-top: 2.5rem; 
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 15px;
+            pointer-events: auto; 
+            flex-wrap: wrap; 
+        }
+        .share-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-white);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .share-btn:hover {
+            background: var(--acid-yellow);
+            color: #000;
+            border-color: var(--acid-yellow);
+        }
+        .share-btn svg { width: 14px; height: 14px; fill: currentColor; }
+
+        /* --- Play Simulation Button Effect --- */
+        .play-simulation-btn {
+            color: var(--acid-yellow);
+            cursor: pointer;
+            transition: color 0.2s;
+            display: inline-block;
+            font-weight: bold;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .play-simulation-btn:hover {
+            color: var(--danger-red);
+            animation: alert-blink 0.1s infinite alternate; /* 高速点滅 */
+            text-shadow: 0 0 5px var(--danger-red);
+        }
+
+        @keyframes alert-blink {
+            0% { opacity: 1; text-shadow: 0 0 10px var(--danger-red); }
+            100% { opacity: 0.4; text-shadow: 0 0 2px var(--danger-red); }
+        }
+
+        /* --- Subscribe Link Animation --- */
         .subscribe-link {
             color: var(--acid-yellow);
             text-decoration: underline;
             transition: all 0.3s ease;
             display: inline-block;
         }
+
         .subscribe-link:hover {
             font-weight: 900; 
             animation: slow-blink 1.5s infinite ease-in-out; 
             text-shadow: 0 0 8px var(--acid-yellow);
         }
+
         @keyframes slow-blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
 
-        /* --- Video Player Layer --- */
+        /* Video Layer (Updated for Size) */
         #video-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.98); z-index: 100; display: none;
@@ -241,11 +339,13 @@
         
         .article-container {
             width: 100%;
+            /* PC: 幅を広げて動画を大きく見せる */
             max-width: 1400px; 
             margin: 0 auto;
             padding: 100px 5vw 150px; 
             display: flex; flex-direction: column; gap: 20px;
         }
+        /* Mobile Padding Adjustment: 動画を画面幅いっぱいに */
         @media (max-width: 768px) { 
             .article-container { padding: 80px 0 150px; } 
             .video-wrapper { border-left: none; border-right: none; }
@@ -373,8 +473,7 @@
         /* Spark Particle */
         .spark {
             position: fixed; width: 3px; height: 3px;
-            background: #fff; border-radius: 50%;
-            pointer-events: none; z-index: 1002;
+            background: #fff; border-radius: 50%; pointer-events: none; z-index: 1002;
             box-shadow: 0 0 5px #fff;
         }
 
@@ -410,6 +509,11 @@
         }
 
         /* --- 12. Utilities --- */
+        .upload-ui { pointer-events: auto; margin-top: 10px; text-align: right; opacity: 0.5; transition: opacity 0.3s; }
+        .upload-ui:hover { opacity: 1; }
+        .upload-btn { background: transparent; border: 1px solid var(--acid-yellow); color: var(--acid-yellow); font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 5px 10px; cursor: pointer; text-transform: uppercase; transition: all 0.3s; display: inline-block; }
+        .upload-btn:hover { background: var(--acid-yellow); color: #000; }
+        #fileInput { display: none; }
         .glitch-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #EBBF00; z-index: 9000; display: none; mix-blend-mode: exclusion; }
         .danger-flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(255,0,0,0.4) 0%, rgba(255,0,0,0.8) 100%); z-index: 5000; opacity: 0; pointer-events: none; mix-blend-mode: overlay; transition: opacity 0.1s; }
         .danger-flash.active { animation: red-strobe 0.12s infinite; }
@@ -438,7 +542,7 @@
 
     <!-- HUD -->
     <div class="hud-overlay">
-        <!-- Changed to Center Alignment -->
+        <!-- Center Alignment -->
         <div class="hud-row" style="justify-content: center;">
             <div class="meta-data" style="text-align: center;">
                 <strong>SYSTEM: ONLINE</strong><br>
@@ -469,7 +573,6 @@
             <div class="background-type">SURVIVAL / HAZARD / CHAOS / SURVIVAL / HAZARD / SURVIVAL / HAZARD / CHAOS / SURVIVAL / HAZARD</div>
             <div class="logo-container" id="main-logo-container" onclick="enterArchives()">
                 <img id="preview-logo" src="logo.png" alt="ZZ LOGO" class="logo-img">
-                <!-- Fallback when logo not found -->
                 <div id="placeholder" class="logo-placeholder-circle"><span>ZZ</span><div>LOGO.PNG NOT FOUND<br>PLEASE PLACE FILE</div></div>
             </div>
             <div class="hero-title-wrapper"><h1 class="hero-title">ZETTAI<br><span class="highlight">ZETSUMEI</span><br>LABORATORY</h1></div>
@@ -479,7 +582,10 @@
     <!-- BLOG -->
     <div id="blog-layer" class="layer">
         <div id="archive-container"></div>
-        <section class="blog-section" style="height: 50vh; justify-content: flex-end;"><div class="meta-data">END OF ARCHIVES<br>© 2026 ZETTAI ZETSUMEI LABO</div></section>
+        <section class="blog-section" style="height: 50vh; justify-content: center; align-items: center; border-bottom: none;">
+             <p><a href="https://www.youtube.com/@絶体絶命ラボ?sub_confirmation=1" target="_blank" class="subscribe-link" style="font-size: 1.2rem;">研究員募集（クリックでYouTubeチャンネル登録ページへ移動）</a></p>
+        </section>
+        <section class="blog-section" style="height: 20vh; justify-content: flex-end; padding-top:0;"><div class="meta-data">END OF ARCHIVES<br>© 2026 ZETTAI ZETSUMEI LABO</div></section>
     </div>
 
     <!-- VIDEO/ARTICLE -->
@@ -544,6 +650,20 @@
 
                         <p><a href="https://www.youtube.com/@絶体絶命ラボ?sub_confirmation=1" target="_blank" class="subscribe-link">研究員募集（クリックでYouTubeチャンネル登録ページへ移動）</a></p>
 
+                        <!-- Share Buttons -->
+                        <div class="share-area">
+                            <a href="https://twitter.com/intent/tweet?text=【閲覧注意】硫酸を浴びたらどうなる？%20-%20絶体絶命ラボ&url=https://zz-labo-site.github.io/zz-labo-site/" target="_blank" class="share-btn">
+                                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> REPORT TO X
+                            </a>
+                            <a href="https://line.me/R/msg/text/?【閲覧注意】硫酸を浴びたらどうなる？%20-%20絶体絶命ラボ%0Ahttps://zz-labo-site.github.io/zz-labo-site/" target="_blank" class="share-btn">
+                                REPORT TO LINE
+                            </a>
+                            <a href="https://www.instagram.com/" target="_blank" class="share-btn">
+                               <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                               REPORT TO INSTAGRAM
+                            </a>
+                        </div>
+
                         <h4>⚠️ 相談・通報窓口</h4>
                         <p>
                         緊急時の通報（警察） 電話番号：110<br>
@@ -577,6 +697,20 @@
                         
                         <p><a href="https://www.youtube.com/@絶体絶命ラボ?sub_confirmation=1" target="_blank" class="subscribe-link">研究員募集（クリックでYouTubeチャンネル登録ページへ移動）</a></p>
 
+                        <!-- Share Buttons -->
+                        <div class="share-area">
+                            <a href="https://twitter.com/intent/tweet?text=盛られた。完全に意識が消えるまでの数分間にすべきこと%20-%20絶体絶命ラボ&url=https://zz-labo-site.github.io/zz-labo-site/" target="_blank" class="share-btn">
+                                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> REPORT TO X
+                            </a>
+                            <a href="https://line.me/R/msg/text/?盛られた。完全に意識が消えるまでの数分間にすべきこと%20-%20絶体絶命ラボ%0Ahttps://zz-labo-site.github.io/zz-labo-site/" target="_blank" class="share-btn">
+                                REPORT TO LINE
+                            </a>
+                             <a href="https://www.instagram.com/" target="_blank" class="share-btn">
+                                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                REPORT TO INSTAGRAM
+                            </a>
+                        </div>
+
                         <h4>⚠️ 相談・通報窓口</h4>
                         <p>
                         性犯罪・性暴力被害者のためのワンストップ支援センター<br>電話番号：#8891（はやくワンストップ）<br>
@@ -606,12 +740,30 @@
                 const clickAttr = isReady ? `onclick="openVideo('${item.id}')"` : "";
                 const styleAttr = isReady ? "" : "pointer-events: none; opacity: 0.6;";
                 
+                // シェアリンク用URL生成
+                const shareUrl = encodeURIComponent("https://zz-labo-site.github.io/zz-labo-site/");
+                const shareText = encodeURIComponent(targetTitle + " - 絶体絶命ラボ");
+
                 html += `
                 <section class="blog-section">
                     <span class="blog-number">CASE_FILE #${item.id}</span>
                     <h2 class="blog-title" style="${styleAttr}" ${clickAttr}>${item.title}</h2>
                     <div class="blog-meta">
                         TARGET: ${targetTitle}<br>STATUS: ${item.description}<br><br>
+                        
+                        <!-- Share Buttons on List (New) -->
+                        <div class="share-area" style="flex-wrap: wrap;">
+                            <a href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}" target="_blank" class="share-btn">
+                                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> REPORT TO X
+                            </a>
+                            <a href="https://line.me/R/msg/text/?${shareText}%0A${shareUrl}" target="_blank" class="share-btn">
+                                REPORT TO LINE
+                            </a>
+                            <a href="https://www.instagram.com/" target="_blank" class="share-btn">
+                               <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                               REPORT TO INSTAGRAM
+                            </a>
+                        </div>
                     </div>
                 </section>`;
             });
@@ -729,11 +881,9 @@
         }
 
         /* EFFECTS */
-        /* Preview Image Loading (Auto-check local logo.png) */
         const previewLogo = document.getElementById('preview-logo');
         const placeholder = document.getElementById('placeholder');
-        // Simple error handling for logo
-        if(previewLogo) {
+        if (previewLogo) {
             previewLogo.onerror = function() { 
                 this.style.display = 'none'; 
                 if(placeholder) placeholder.style.display = 'flex'; 
@@ -756,6 +906,7 @@
         let isTicking = false;
         let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
         let outX = mouseX, outY = mouseY;
+        // Rotation variable for electricity
         let rotation = 0;
 
         // PC Mouse
@@ -770,41 +921,70 @@
             if (!isTicking) { window.requestAnimationFrame(() => { updateVisuals(); isTicking = false; }); isTicking = true; }
         }, { passive: true });
 
+        // Spark creation logic
         function createSpark(x, y, speed) {
             const spark = document.createElement('div');
             spark.className = 'spark';
             document.body.appendChild(spark);
+            
             const angle = Math.random() * Math.PI * 2;
             const velocity = Math.random() * speed * 0.5 + 2; 
             const life = Math.random() * 300 + 200; 
-            spark.style.left = x + 'px'; spark.style.top = y + 'px';
+
+            spark.style.left = x + 'px';
+            spark.style.top = y + 'px';
+            
             const animation = spark.animate([
                 { transform: `translate(0, 0) scale(1)`, opacity: 1 },
                 { transform: `translate(${Math.cos(angle) * velocity * 10}px, ${Math.sin(angle) * velocity * 10}px) scale(0)`, opacity: 0 }
-            ], { duration: life, easing: 'cubic-bezier(0, .9, .57, 1)' });
+            ], {
+                duration: life,
+                easing: 'cubic-bezier(0, .9, .57, 1)'
+            });
+
             animation.onfinish = () => spark.remove();
         }
 
         function animateCursor() {
-            if (!cursorOuter || !cursorInner) { requestAnimationFrame(animateCursor); return; }
+            // Check existence of cursor elements
+            if (!cursorOuter || !cursorInner) {
+                requestAnimationFrame(animateCursor);
+                return;
+            }
+
+            // Speed Calculation
             const speed = Math.hypot(mouseX - outX, mouseY - outY);
+            
             if (speed > 2) {
                 cursorOuter.classList.add('moving');
-                rotation += speed * 0.5; 
-                if (speed > 5 && Math.random() < 0.3) { createSpark(outX, outY, speed); }
+                // Speed-based rotation
+                rotation += speed * 0.5; // Multiply speed for rotation effect
+                
+                // Trigger sparks randomly when moving fast
+                if (speed > 5 && Math.random() < 0.3) {
+                    createSpark(outX, outY, speed);
+                }
             } else {
                 cursorOuter.classList.remove('moving');
-                rotation += 2; 
+                rotation += 2; // Idle rotation
             }
-            outX += (mouseX - outX) * 0.25; outY += (mouseY - outY) * 0.25;
+
+            // Follow Logic with increased responsiveness (0.15 -> 0.25)
+            outX += (mouseX - outX) * 0.25; 
+            outY += (mouseY - outY) * 0.25;
+            
+            // Apply Transform
             cursorOuter.style.transform = `translate(${outX}px, ${outY}px) translate(-50%, -50%) rotate(${rotation}deg)`;
             cursorInner.style.transform = `translate(${outX}px, ${outY}px) translate(-50%, -50%)`;
+            
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
 
         function updateVisuals() {
+            // Check for existence of elements before accessing classList
             const entrance = document.getElementById('entrance-layer');
+
             if (!isHovering) {
                 const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
                 const dx = (mouseX - cx) / cx, dy = (mouseY - cy) / cy;
@@ -821,7 +1001,7 @@
         }
 
         const logoContainer = document.getElementById('main-logo-container');
-        if (logoContainer) {
+        if (logoContainer) { // Check existence
             logoContainer.addEventListener('mouseenter', () => {
                 isHovering = true;
                 if(cursorOuter) cursorOuter.classList.add('warning');
@@ -878,6 +1058,12 @@
         }
         drawWaves();
 
+        // Remove Loader on init (since it was removed from UI but code might be good to have just in case, but let's hide it immediately)
+        setTimeout(() => { 
+            const l = document.querySelector('.loader');
+            if(l) l.classList.add('hidden'); 
+        }, 100);
+
         /* --- Access Counter --- */
         const countEl = document.getElementById('access-count');
         const namespace = 'zz-labo-site-v1';
@@ -885,14 +1071,16 @@
 
         async function updateCounter() {
             try {
-                // CountAPI
+                // CountAPI (無料・登録不要のカウンタAPI)
+                // hitエンドポイントはカウントアップして値を返す
                 const res = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
                 const data = await res.json();
                 
+                // ゼロ埋めして表示 (例: 00123)
                 if (countEl) countEl.innerText = data.value.toString().padStart(6, '0');
             } catch (e) {
                 console.warn('Counter API failed, using local fallback.');
-                // Fallback
+                // APIが失敗した場合のフォールバック（ローカルストレージで擬似カウント）
                 let localCount = localStorage.getItem('local_access_count') || '1024';
                 localCount = parseInt(localCount) + 1;
                 localStorage.setItem('local_access_count', localCount);
