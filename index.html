@@ -202,25 +202,23 @@
             font-size: 1rem; color: rgba(255,255,255,0.7); max-width: 700px; line-height: 1.6;
         }
 
-        /* --- Play Simulation Button Effect (New) --- */
-        .play-simulation-btn {
+        /* --- Subscribe Link Animation (New) --- */
+        .subscribe-link {
             color: var(--acid-yellow);
-            cursor: pointer;
-            transition: color 0.2s;
+            text-decoration: underline;
+            transition: all 0.3s ease;
             display: inline-block;
-            font-weight: bold;
-            font-family: 'JetBrains Mono', monospace;
         }
 
-        .play-simulation-btn:hover {
-            color: var(--danger-red);
-            animation: alert-blink 0.1s infinite alternate; /* 高速点滅 */
-            text-shadow: 0 0 5px var(--danger-red);
+        .subscribe-link:hover {
+            font-weight: 900; /* 文字を太く */
+            animation: slow-blink 1.5s infinite ease-in-out; /* ゆっくり点滅 */
+            text-shadow: 0 0 8px var(--acid-yellow);
         }
 
-        @keyframes alert-blink {
-            0% { opacity: 1; text-shadow: 0 0 10px var(--danger-red); }
-            100% { opacity: 0.4; text-shadow: 0 0 2px var(--danger-red); }
+        @keyframes slow-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         /* Video Layer (Updated for Size) */
@@ -274,6 +272,11 @@
         .close-btn:hover { background: var(--text-white); color: #000; }
         .fallback-btn { color: var(--acid-yellow); border-color: var(--acid-yellow); }
         .fallback-btn:hover { background: var(--acid-yellow); color: #000; }
+        .embed-hint {
+            font-family: 'JetBrains Mono', monospace; font-size: 10px;
+            color: rgba(255,255,255,0.5); text-align: center;
+            margin-top: -10px; margin-bottom: 20px;
+        }
         
         /* Article */
         .article-header { border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 20px; margin-bottom: 20px; }
@@ -408,6 +411,11 @@
         }
 
         /* --- 12. Utilities --- */
+        .upload-ui { pointer-events: auto; margin-top: 10px; text-align: right; opacity: 0.5; transition: opacity 0.3s; }
+        .upload-ui:hover { opacity: 1; }
+        .upload-btn { background: transparent; border: 1px solid var(--acid-yellow); color: var(--acid-yellow); font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 5px 10px; cursor: pointer; text-transform: uppercase; transition: all 0.3s; display: inline-block; }
+        .upload-btn:hover { background: var(--acid-yellow); color: #000; }
+        #fileInput { display: none; }
         .glitch-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #EBBF00; z-index: 9000; display: none; mix-blend-mode: exclusion; }
         .danger-flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(255,0,0,0.4) 0%, rgba(255,0,0,0.8) 100%); z-index: 5000; opacity: 0; pointer-events: none; mix-blend-mode: overlay; transition: opacity 0.1s; }
         .danger-flash.active { animation: red-strobe 0.12s infinite; }
@@ -434,7 +442,7 @@
     <div class="cursor-inner"></div>
     <div class="glitch-transition" id="transition-overlay"></div>
 
-    <!-- HUD -->
+    <!-- HUD (Deleted Preview Button) -->
     <div class="hud-overlay">
         <!-- Changed to Center Alignment -->
         <div class="hud-row" style="justify-content: center;">
@@ -446,6 +454,7 @@
         
         <div class="hud-row" style="align-items: flex-end;">
             <div class="meta-data" id="status-text">PROTOCOL: SURVIVAL<br>STATUS: WAITING FOR INPUT</div>
+            <!-- Removed Upload UI -->
         </div>
         <div class="scroll-indicator" id="scroll-hint">INITIALIZE PROTOCOL</div>
     </div>
@@ -539,7 +548,7 @@
                         
                         <p>知っているだけで、自分や大切な人を守るための「盾」になる知識があります。 絶体絶命のシナリオを生き抜くために、あなたも「研究員」として参加しませんか？</p>
 
-                        <p><a href="https://www.youtube.com/@絶体絶命ラボ?sub_confirmation=1" target="_blank" style="color:var(--acid-yellow); text-decoration:underline;">🔬 研究員募集（ワンクリックでチャンネル登録）</a></p>
+                        <p><a href="https://www.youtube.com/@絶体絶命ラボ?sub_confirmation=1" target="_blank" class="subscribe-link">研究員募集（クリックでYouTubeチャンネル登録ページへ移動）</a></p>
 
                         <h4>⚠️ 相談・通報窓口</h4>
                         <p>
@@ -572,6 +581,8 @@
                         
                         <h3>2. 【未来を守る】言い逃れを許さない証拠の確保</h3>
                         <p>もし声が出せなくなっても、まだできることがあります。 意識を失う直前、自分の服に飲み物をこぼしてください。 そのシミが、後で犯人を追い詰める決定的な「証拠」を身体に刻むことになります。 これは、未来のあなたを守るための執念の逆転劇です。</p>
+                        
+                        <p><a href="https://www.youtube.com/@絶体絶命ラボ?sub_confirmation=1" target="_blank" class="subscribe-link">研究員募集（クリックでYouTubeチャンネル登録ページへ移動）</a></p>
 
                         <h4>⚠️ 相談・通報窓口</h4>
                         <p>
@@ -608,7 +619,6 @@
                     <h2 class="blog-title" onclick="openVideo('${item.id}')">${item.title}</h2>
                     <div class="blog-meta">
                         TARGET: ${targetTitle}<br>STATUS: ${item.description}<br><br>
-                        <span class="play-simulation-btn" onclick="openVideo('${item.id}')">[ PLAY SIMULATION ]</span>
                     </div>
                 </section>`;
             });
@@ -906,5 +916,6 @@
     </script>
 </body>
 </html>
+
 
 
